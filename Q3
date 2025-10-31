@@ -1,0 +1,103 @@
+import org.openqa.selenium.By;
+
+import org.openqa.selenium.WebDriver;
+
+import org.openqa.selenium.WebElement;
+
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import org.openqa.selenium.support.ui.ExpectedConditions;
+
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+import java.time.Duration;
+ 
+public class Login {
+
+    public static void main(String[] args) {
+
+        WebDriver driver = new ChromeDriver();
+
+        driver.manage().window().maximize();
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+ 
+        try {
+
+            driver.get("https://www.guvi.in/");
+
+            wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+ 
+            WebElement signupBtn = wait.until(ExpectedConditions.elementToBeClickable(
+
+                By.xpath("/html/body/main/div[2]/div/div[5]/div/div[2]/a")));
+
+            signupBtn.click();
+ 
+            WebElement nameField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("name")));
+
+            nameField.sendKeys("Test User");
+ 
+            WebElement emailField = driver.findElement(By.id("email"));
+
+            emailField.sendKeys("testeruser142@gmail.com");
+ 
+            WebElement passwordField = driver.findElement(By.id("password"));
+
+            passwordField.sendKeys("Password123");
+            
+       
+ 
+            WebElement signupSubmit = driver.findElement(By.xpath("//*[@id='signup-btn']"));
+
+            signupSubmit.click();
+ 
+            wait.until(ExpectedConditions.or(
+
+                ExpectedConditions.urlContains("dashboard"),
+
+                ExpectedConditions.titleContains("GUVI")
+
+            ));
+ 
+            System.out.println("Signup completed successfully with email: " + emailField.getAttribute("value"));
+ 
+            driver.get("https://www.guvi.in/login");
+ 
+            WebElement loginEmail = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
+
+            loginEmail.sendKeys("testuser123@example.com");
+ 
+            WebElement loginPassword = driver.findElement(By.id("password"));
+
+            loginPassword.sendKeys("Password123");
+ 
+            WebElement loginSubmit = driver.findElement(By.xpath("//*[@id='login-btn']"));
+
+            loginSubmit.click();
+ 
+            wait.until(ExpectedConditions.or(
+
+                ExpectedConditions.urlContains("dashboard"),
+
+                ExpectedConditions.titleContains("GUVI")
+
+            ));
+ 
+            System.out.println("Login successful!");
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+
+        } finally {
+
+            driver.quit();
+
+        }
+
+    }
+
+}
+
+ 
